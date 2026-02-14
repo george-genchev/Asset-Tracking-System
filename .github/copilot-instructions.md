@@ -26,7 +26,7 @@ Classical client-server application:
 - Authentication: Supabase's built-in authentication system for user registration and login
 - API Integration: Supabase's RESTful API for seamless communication between the frontend and backend
 - Build Tools: Vite for development and build process, with npm scripts for running the application in development and production modes.
-- Deployment: The application will be deployed on a cloud platform such as Vercel or Netlify for the frontend, and Supabase for the backend and database.
+- Deployment: The application will be deployed on a cloud platform such as Netlify or Vercel for the frontend, and Supabase for the backend and database. Use Netlify in this project for frontend deployment and hosting.
 - Source Control: GitHub for version control and collaboration among developers.
 
 ## Modular Design and Code Quality

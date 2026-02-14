@@ -1,0 +1,27 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.site-header .navbar-brand {
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+.site-header .nav-link {
+  font-weight: 600;
+  color: var(--ink);
+  position: relative;
+}
+
+.site-header .nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+}
