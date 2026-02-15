@@ -1,5 +1,6 @@
 import "../form.css";
 import html from "./edit.html?raw";
+import { Toast } from "bootstrap";
 import { getCurrentUser, getStrategyById, updateStrategy, getAssetsByStrategy } from "../../../lib/supabase.js";
 
 let strategyId = null;
@@ -89,8 +90,13 @@ const page = {
             return;
           }
 
-          // Success - redirect to strategies list
-          window.location.hash = "#/strategies";
+          // Success - show toast and redirect
+          showSuccessToast();
+          
+          // Redirect after a short delay to allow toast to be seen
+          setTimeout(() => {
+            window.location.hash = "#/strategies";
+          }, 1500);
         } catch (error) {
           console.error("Error:", error);
           errorMessage.textContent = "An error occurred while updating the strategy";
@@ -120,6 +126,28 @@ function formatDate(dateString) {
     hour: '2-digit',
     minute: '2-digit'
   });
+}
+
+function showSuccessToast() {
+  try {
+    const toastElement = document.getElementById("successToast");
+    if (!toastElement) {
+      console.error("Toast element not found");
+      return;
+    }
+
+    // Create and show toast
+    const successToast = new Toast(toastElement, {
+      autohide: false,
+      delay: 3000
+    });
+
+    successToast.show();
+
+    console.log("Success toast displayed");
+  } catch (error) {
+    console.error("Failed to show toast:", error);
+  }
 }
 
 export default page;
