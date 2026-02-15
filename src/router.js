@@ -10,6 +10,9 @@ import strategyPage from "./pages/strategy/strategy.js";
 import strategiesListPage from "./pages/strategies/strategies.js";
 import strategiesAddPage from "./pages/strategies/add/add.js";
 import strategiesEditPage from "./pages/strategies/edit/edit.js";
+import assetsListPage from "./pages/assets/assets.js";
+import assetsAddPage from "./pages/assets/add/add.js";
+import assetsEditPage from "./pages/assets/edit/edit.js";
 import notFoundPage from "./pages/not-found/not-found.js";
 
 const routes = {
@@ -18,12 +21,15 @@ const routes = {
   "/login": loginPage,
   "/register": registerPage,
   "/strategies": strategiesListPage,
-  "/strategies/add": strategiesAddPage
+  "/strategies/add": strategiesAddPage,
+  "/assets": assetsListPage,
+  "/assets/add": assetsAddPage
 };
 
 // Dynamic routes patterns (order matters - check more specific patterns first)
 const dynamicRoutes = [
   { pattern: /^\/strategies\/edit\/[^/?]+$/, page: strategiesEditPage },
+  { pattern: /^\/assets\/edit\/[^/?]+$/, page: assetsEditPage },
   { pattern: /^\/strategies\/[^/?]+$/, page: strategyPage }
 ];
 
@@ -51,14 +57,17 @@ function renderLayout(contentHtml) {
 }
 
 function getRoute(path) {
+  // Extract just the path part, removing query string
+  const pathOnly = path.split('?')[0];
+  
   // Check static routes first
-  if (routes[path]) {
-    return routes[path];
+  if (routes[pathOnly]) {
+    return routes[pathOnly];
   }
 
   // Check dynamic routes
   for (const { pattern, page } of dynamicRoutes) {
-    if (pattern.test(path)) {
+    if (pattern.test(pathOnly)) {
       return page;
     }
   }

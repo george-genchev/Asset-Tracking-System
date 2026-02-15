@@ -1,8 +1,12 @@
 import "./strategy.css";
 import html from "./strategy.html?raw";
-import { getCurrentUser, getStrategyById, getAssetsByStrategy } from "../../lib/supabase.js";
+import { Modal, Toast } from "bootstrap";
+import { getCurrentUser, getStrategyById, getAssetsByStrategy, deleteAsset } from "../../lib/supabase.js";
 
 let strategyId = null;
+let deleteModal = null;
+let assetToDelete = null;
+let assetsData = [];
 
 const page = {
   title: "Strategy | Asset Tracking System",
@@ -54,13 +58,19 @@ const page = {
       }
 
       // Render strategy details
-      renderStrategy(strategy, assets || []);
+      assetsData = assets || [];
+      renderStrategy(strategy, assetsData);
 
       // Set up create asset button with strategy ID
       const createAssetBtn = document.getElementById("create-asset-btn");
       if (createAssetBtn) {
         createAssetBtn.href = `#/assets/add?strategy=${strategyId}`;
       }
+
+      // Initialize delete modal
+      Promise.resolve().then(() => {
+        initializeDeleteModal();
+      });
     } catch (error) {
       console.error("Error initializing strategy page:", error);
       showError("An error occurred while loading the strategy");
@@ -117,11 +127,21 @@ function renderStrategy(strategy, assets) {
       <td>
         ${asset.targets ? `<span class="badge bg-info text-dark">${escapeHtml(asset.targets.name)}</span>` : '-'}
       </td>
-      <td>
-        ${asset.action ? escapeHtml(asset.action) : '-'}
+      <td class="text-center">
+        <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-warning me-2" title="Edit Asset" data-bs-toggle="tooltip">
+          <i class="bi bi-pencil-fill"></i>
+        </a>
+        <button class="btn btn-sm btn-outline-danger delete-asset-btn" data-asset-id="${asset.id}" data-asset-ticker="${escapeHtml(asset.ticker)}" title="Delete Asset" data-bs-toggle="tooltip">
+          <i class="bi bi-trash-fill"></i>
+        </button>
       </td>
     </tr>
   `).join('');
+
+  // Attach delete button event listeners
+  document.querySelectorAll('.delete-asset-btn').forEach(btn => {
+    btn.addEventListener('click', handleDeleteClick);
+  });
 }
 
 function showError(message) {
@@ -142,6 +162,100 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+function initializeDeleteModal() {
+  const deleteModalEl = document.getElementById('deleteAssetModal');
+  if (deleteModalEl && !deleteModal) {
+    deleteModal = new Modal(deleteModalEl, {
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    const confirmBtn = document.getElementById('confirmDeleteAssetBtn');
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', handleDeleteConfirmed);
+    }
+  }
+}
+
+function handleDeleteClick(e) {
+  e.preventDefault();
+  const btn = e.currentTarget;
+  const assetId = btn.dataset.assetId;
+  const assetTicker = btn.dataset.assetTicker;
+
+  assetToDelete = { id: assetId, ticker: assetTicker };
+
+  const modalTitle = document.getElementById('deleteAssetModalTitle');
+  const modalDescription = document.getElementById('deleteAssetModalDescription');
+
+  if (modalTitle) {
+    modalTitle.textContent = `Delete "${assetTicker}"?`;
+  }
+
+  if (modalDescription) {
+    modalDescription.textContent = `Are you sure you want to delete this asset? This action cannot be undone.`;
+  }
+
+  if (deleteModal) {
+    deleteModal.show();
+  }
+}
+
+async function handleDeleteConfirmed() {
+  if (!assetToDelete) return;
+
+  const btn = document.getElementById('confirmDeleteAssetBtn');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Deleting...';
+  }
+
+  try {
+    const { error } = await deleteAsset(assetToDelete.id);
+    if (error) throw error;
+
+    // Close modal
+    if (deleteModal) {
+      deleteModal.hide();
+    }
+
+    // Remove asset from data
+    assetsData = assetsData.filter(a => a.id !== assetToDelete.id);
+
+    // Re-render assets table
+    const strategy = { title: document.getElementById('strategy-title').textContent };
+    renderStrategy(strategy, assetsData);
+
+    // Attach listeners again
+    Promise.resolve().then(() => {
+      document.querySelectorAll('.delete-asset-btn').forEach(btn => {
+        btn.addEventListener('click', handleDeleteClick);
+      });
+    });
+
+    // Show success toast
+    showDeleteSuccessToast();
+
+  } catch (error) {
+    console.error('Error deleting asset:', error);
+    alert('Failed to delete asset: ' + (error.message || 'Unknown error'));
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-trash-fill me-2"></i>Delete';
+    }
+    assetToDelete = null;
+  }
+}
+
+function showDeleteSuccessToast() {
+  const toastEl = document.getElementById('deleteAssetSuccessToast');
+  if (toastEl) {
+    const toast = new Toast(toastEl);
+    toast.show();
+  }
 }
 
 export default page;

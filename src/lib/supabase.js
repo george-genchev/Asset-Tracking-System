@@ -141,3 +141,83 @@ export async function deleteStrategy(strategyId) {
     .eq("id", strategyId);
   return { data, error };
 }
+
+// Asset CRUD operations
+export async function getAllAssets(userId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("assets")
+    .select(`
+      *,
+      strategies(id, title),
+      targets(id, name)
+    `)
+    .eq("strategies.owner_id", userId)
+    .order("created_at", { ascending: false });
+  return { data, error };
+}
+
+export async function getAssetById(assetId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("assets")
+    .select(`
+      *,
+      strategies(id, title, owner_id),
+      targets(id, name)
+    `)
+    .eq("id", assetId)
+    .single();
+  return { data, error };
+}
+
+export async function createAsset(strategyId, ticker, name, exchange, quantity, targetId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("assets")
+    .insert([{
+      strategy_id: strategyId,
+      ticker,
+      name,
+      exchange,
+      quantity,
+      target_id: targetId,
+      date: new Date().toISOString()
+    }])
+    .select()
+    .single();
+  return { data, error };
+}
+
+export async function updateAsset(assetId, assetData) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("assets")
+    .update({
+      ...assetData,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", assetId)
+    .select()
+    .single();
+  return { data, error };
+}
+
+export async function deleteAsset(assetId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("assets")
+    .delete()
+    .eq("id", assetId);
+  return { data, error };
+}
+
+// Target helpers
+export async function getTargets() {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("targets")
+    .select("*")
+    .order("name", { ascending: true });
+  return { data, error };
+}
