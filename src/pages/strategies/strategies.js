@@ -1,5 +1,6 @@
 import "./strategies.css";
 import html from "./strategies.html?raw";
+import { Modal } from "bootstrap";
 import { getCurrentUser, getUserStrategies, deleteStrategy } from "../../lib/supabase.js";
 
 let deleteModal = null;
@@ -12,6 +13,9 @@ const page = {
   },
   async init() {
     try {
+      deleteModal = null;
+      strategyToDelete = null;
+
       const { user, error: userError } = await getCurrentUser();
       
       if (userError || !user) {
@@ -32,20 +36,10 @@ const page = {
       // Render strategies list
       renderStrategiesList(strategies || []);
 
-      // Initialize delete modal
-      try {
-        const modalElement = document.getElementById("deleteModal");
-        if (modalElement && typeof bootstrap !== "undefined") {
-          deleteModal = new bootstrap.Modal(modalElement);
-          const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
-          if (confirmDeleteBtn) {
-            confirmDeleteBtn.addEventListener("click", handleDeleteConfirmed);
-          }
-        }
-      } catch (modalError) {
-        console.error("Error initializing modal:", modalError);
-        // Continue without modal - it's not critical
-      }
+      // Initialize modal on next tick to ensure DOM is ready
+      Promise.resolve().then(() => {
+        initializeDeleteModal();
+      });
     } catch (error) {
       console.error("Error initializing strategies page:", error);
       showError("An error occurred: " + (error.message || "Unknown error"));
@@ -115,30 +109,36 @@ function renderStrategiesList(strategies) {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       strategyToDelete = btn.dataset.id;
-      if (deleteModal) {
-        deleteModal.show();
-      } else {
-        // Fallback: ask for confirmation using browser confirm
-        if (confirm("Are you sure you want to delete this strategy?")) {
-          deleteStrategy(btn.dataset.id).then(({ error }) => {
-            if (error) {
-              console.error("Error deleting strategy:", error);
-              showError("Failed to delete strategy");
-            } else {
-              // Reload strategies
-              location.hash = "#/strategies";
-            }
-          });
-        }
-      }
+      showDeleteConfirmation();
     });
   });
+}
+
+function showDeleteConfirmation() {
+  if (!strategyToDelete) return;
+  
+  if (deleteModal) {
+    deleteModal.show();
+  } else {
+    console.error("Modal not initialized");
+    showError("Failed to open delete confirmation. Please try again.");
+  }
 }
 
 async function handleDeleteConfirmed() {
   if (!strategyToDelete) return;
 
   try {
+    // Add loading state to button
+    const confirmBtn = document.getElementById("confirm-delete-btn");
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Deleting...
+      `;
+    }
+
     const { error } = await deleteStrategy(strategyToDelete);
     
     if (error) {
@@ -147,9 +147,15 @@ async function handleDeleteConfirmed() {
       if (deleteModal) {
         deleteModal.hide();
       }
+      // Reset button state
+      if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = '<i class="bi bi-trash-fill me-2"></i>Delete Permanently';
+      }
       return;
     }
 
+    // Success - hide modal and redirect
     if (deleteModal) {
       deleteModal.hide();
     }
@@ -160,6 +166,12 @@ async function handleDeleteConfirmed() {
   } catch (error) {
     console.error("Error during delete:", error);
     showError("An error occurred while deleting the strategy");
+    // Reset button state
+    const confirmBtn = document.getElementById("confirm-delete-btn");
+    if (confirmBtn) {
+      confirmBtn.disabled = false;
+      confirmBtn.innerHTML = '<i class="bi bi-trash-fill me-2"></i>Delete Permanently';
+    }
   }
 }
 
@@ -187,6 +199,32 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+function initializeDeleteModal() {
+  try {
+    const modalElement = document.getElementById("deleteModal");
+    if (!modalElement) {
+      console.error("Modal element not found");
+      return;
+    }
+
+    // Create modal instance
+    deleteModal = new Modal(modalElement, {
+      backdrop: "static",
+      keyboard: false
+    });
+
+    // Setup delete button listener
+    const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+    if (confirmDeleteBtn) {
+      confirmDeleteBtn.onclick = handleDeleteConfirmed;
+    }
+
+    console.log("Delete modal initialized successfully");
+  } catch (error) {
+    console.error("Failed to initialize modal:", error);
+  }
 }
 
 export default page;

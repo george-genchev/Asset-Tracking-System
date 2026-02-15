@@ -61,6 +61,7 @@ Use modular code structure, with separate files for different functionalities, c
 - Use Supabase Storage for handling file uploads, if necessary (e.g., for user profile pictures or asset images).
 - When changing the database schema, use Supabase's migration tools to manage and version control database changes effectively.
 - After applying a migration in Supabase, keep a copy of the migration file in the project's repository for reference and version control. This helps track changes to the database schema over time and allows for easier collaboration among developers.
+- Never edit exsiting migration files after they have been applied to the database, as this can lead to inconsistencies and issues with database integrity. If changes are needed, create a new migration file to apply the necessary updates to the database schema.
 
 ## Authentication and Authorization
 
