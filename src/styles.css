@@ -6,9 +6,11 @@
   --ink: #1f1f24;
   --accent: #e44b3a;
   --accent-dark: #b63a2d;
+  --accent-rgb: 228, 75, 58;
   --panel: #ffffff;
   --muted: #5b6073;
   --shadow: 0 20px 50px rgba(23, 28, 38, 0.12);
+  --text: #1f1f24;
 }
 
 * {

@@ -4,10 +4,14 @@ import headerHtml from "./components/header/header.html?raw";
 import footerHtml from "./components/footer/footer.html?raw";
 import indexPage from "./pages/index/index.js";
 import dashboardPage from "./pages/dashboard/dashboard.js";
+import loginPage from "./pages/login/login.js";
+import registerPage from "./pages/register/register.js";
 
 const routes = {
   "/": indexPage,
-  "/dashboard": dashboardPage
+  "/dashboard": dashboardPage,
+  "/login": loginPage,
+  "/register": registerPage
 };
 
 function getPath() {

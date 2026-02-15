@@ -1,0 +1,29 @@
+/* Login Page Styles (inherits from register.css via @import) */
+@import "../register/register.css";
+
+/* Demo Credentials Section */
+.auth-demo {
+  padding-top: 1rem;
+}
+
+.auth-demo p {
+  margin-bottom: 1rem;
+}
+
+.demo-button button {
+  color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+
+.demo-button button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+.border-secondary-subtle {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}

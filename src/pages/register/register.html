@@ -1,0 +1,82 @@
+<!-- Register Page -->
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="display-6 fw-bold">Create Account</h1>
+      <p class="text-muted-strong">Join us today and start managing your investments</p>
+    </div>
+
+    <!-- Error Alert -->
+    <div id="error-alert" class="alert alert-danger d-none" role="alert"></div>
+
+    <!-- Success Alert -->
+    <div id="success-alert" class="alert alert-success d-none" role="alert"></div>
+
+    <!-- Register Form -->
+    <form id="register-form" class="auth-form">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input
+          type="email"
+          class="form-control form-control-lg"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+          autocomplete="email"
+        />
+        <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control form-control-lg"
+          id="password"
+          name="password"
+          placeholder="Create a strong password"
+          required
+          autocomplete="new-password"
+        />
+        <small class="form-text text-muted">At least 8 characters recommended</small>
+      </div>
+
+      <div class="mb-4">
+        <label for="password-confirm" class="form-label">Confirm Password</label>
+        <input
+          type="password"
+          class="form-control form-control-lg"
+          id="password-confirm"
+          name="password-confirm"
+          placeholder="Confirm your password"
+          required
+          autocomplete="new-password"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-accent btn-lg w-100 mb-3"
+        id="submit-btn"
+      >
+        Create Account
+      </button>
+
+      <p class="text-center text-muted-strong">
+        Already have an account?
+        <a href="#/login" class="text-decoration-none fw-bold">Sign In</a>
+      </p>
+    </form>
+
+    <!-- Loading State -->
+    <div id="loading-state" class="d-none">
+      <div class="text-center">
+        <div class="spinner-border text-accent" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted-strong">Creating your account...</p>
+      </div>
+    </div>
+  </div>
+</div>
