@@ -49,7 +49,7 @@ const page = {
       
       if (assetsError) {
         console.error("Error fetching assets:", assetsError);
-        showError("Failed to load assets");
+        showError("Failed to load assets: " + (assetsError.message || "Unknown error"));
         return;
       }
 
@@ -64,21 +64,31 @@ const page = {
 
 function renderStrategy(strategy, assets) {
   // Update header
-  document.getElementById("strategy-title").textContent = escapeHtml(strategy.title);
-  document.getElementById("strategy-description").textContent = strategy.description ? escapeHtml(strategy.description) : "No description provided";
+  const titleEl = document.getElementById("strategy-title");
+  const descEl = document.getElementById("strategy-description");
+  const assetCountEl = document.getElementById("strategy-asset-count");
+  const createdDateEl = document.getElementById("strategy-created-date");
+  const tbody = document.getElementById("assets-tbody");
+
+  if (!titleEl || !descEl || !assetCountEl || !createdDateEl || !tbody) {
+    console.error("Missing required DOM elements");
+    showError("Page layout error - missing elements");
+    return;
+  }
+
+  titleEl.textContent = escapeHtml(strategy.title);
+  descEl.textContent = strategy.description ? escapeHtml(strategy.description) : "No description provided";
   
   // Update info cards
-  document.getElementById("strategy-asset-count").textContent = assets.length;
+  assetCountEl.textContent = assets.length;
   const createdDate = new Date(strategy.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
   });
-  document.getElementById("strategy-created-date").textContent = createdDate;
+  createdDateEl.textContent = createdDate;
 
   // Render assets table
-  const tbody = document.getElementById("assets-tbody");
-  
   if (assets.length === 0) {
     tbody.innerHTML = `
       <tr>

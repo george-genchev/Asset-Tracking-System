@@ -99,7 +99,7 @@ export async function getAssetsByStrategy(strategyId) {
     .from("assets")
     .select("*, targets(name)")
     .eq("strategy_id", strategyId)
-    .order("order", { ascending: true });
+    .order("created_at", { ascending: true });
   return { data, error };
 }
 
