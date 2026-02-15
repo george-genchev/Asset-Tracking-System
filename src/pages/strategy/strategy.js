@@ -55,6 +55,12 @@ const page = {
 
       // Render strategy details
       renderStrategy(strategy, assets || []);
+
+      // Set up create asset button with strategy ID
+      const createAssetBtn = document.getElementById("create-asset-btn");
+      if (createAssetBtn) {
+        createAssetBtn.href = `#/assets/add?strategy=${strategyId}`;
+      }
     } catch (error) {
       console.error("Error initializing strategy page:", error);
       showError("An error occurred while loading the strategy");
