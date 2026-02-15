@@ -35,6 +35,7 @@ async function updateAuthUI() {
 
       userName.textContent = displayName || "Account";
       userItem.classList.remove("d-none");
+      userItem.classList.add("d-flex");
 
       loginMobile?.classList.add("d-none");
       registerMobile?.classList.add("d-none");
@@ -50,6 +51,7 @@ async function updateAuthUI() {
       }
     } else {
       userItem.classList.add("d-none");
+      userItem.classList.remove("d-flex");
 
       loginMobile?.classList.remove("d-none");
       registerMobile?.classList.remove("d-none");
