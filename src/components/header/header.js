@@ -1,5 +1,5 @@
 import "./header.css";
-import { getCurrentUser } from "../../lib/supabase.js";
+import { getCurrentUser, signOut } from "../../lib/supabase.js";
 
 export function initHeader(activePath) {
   const links = document.querySelectorAll("[data-route]");
@@ -18,6 +18,7 @@ async function updateAuthUI() {
   const registerDesktop = document.getElementById("nav-register-desktop");
   const userItem = document.getElementById("nav-user");
   const userName = document.getElementById("nav-user-name");
+  const signoutBtn = document.getElementById("nav-signout");
 
   if (!userItem || !userName) {
     return;
@@ -39,6 +40,14 @@ async function updateAuthUI() {
       registerMobile?.classList.add("d-none");
       loginDesktop?.classList.add("d-none");
       registerDesktop?.classList.add("d-none");
+
+      // Add sign out button click handler
+      if (signoutBtn) {
+        signoutBtn.addEventListener("click", async () => {
+          await signOut();
+          window.location.hash = "#/";
+        });
+      }
     } else {
       userItem.classList.add("d-none");
 
