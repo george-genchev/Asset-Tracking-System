@@ -1,40 +1,122 @@
-<section class="section-panel">
-  <div class="row align-items-center g-4">
-    <div class="col-lg-7">
-      <p class="text-uppercase text-muted-strong mb-2">Portfolio Overview</p>
-      <h1 class="display-5 fw-bold">
-        Stay ahead of your financial goals with real-time clarity.
-      </h1>
-      <p class="lead text-muted-strong">
-        Track assets, understand performance, and build strategies that match your
-        ambition.
-      </p>
-      <div class="d-flex gap-3 flex-wrap">
-        <a class="btn btn-accent btn-lg" href="#/dashboard">View dashboard</a>
-        <button class="btn btn-outline-dark btn-lg" type="button">
-          Add your first asset
-        </button>
+<!-- Hero Section -->
+<section class="section-landing-hero">
+  <div class="container">
+    <div class="row align-items-center min-vh-50">
+      <div class="col-lg-6">
+        <p class="text-uppercase text-muted-strong mb-3 fw-bold">Welcome to Asset Tracking System</p>
+        <h1 class="display-4 fw-bold mb-4">
+          Master Your Investment Portfolio with Precision
+        </h1>
+        <p class="lead text-muted-strong mb-4">
+          Take control of your financial assets with our comprehensive platform. Track investments, analyze performance, and build diversified strategies—all in one place.
+        </p>
+        <div class="d-flex gap-3 flex-wrap">
+          <a class="btn btn-accent btn-lg" href="#/register">Get Started</a>
+          <a class="btn btn-outline-accent btn-lg" href="#/login">Sign In</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="landing-illustration">
+          <div class="icon-placeholder">
+            <svg width="100%" height="100%" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="150" cy="150" r="140" stroke="var(--accent)" stroke-width="2" opacity="0.2"/>
+              <circle cx="150" cy="150" r="100" stroke="var(--accent)" stroke-width="2" opacity="0.3"/>
+              <circle cx="150" cy="150" r="60" stroke="var(--accent)" stroke-width="2" opacity="0.4"/>
+              <circle cx="150" cy="150" r="20" fill="var(--accent)"/>
+              <line x1="150" y1="150" x2="210" y2="90" stroke="var(--accent)" stroke-width="2" opacity="0.6"/>
+              <circle cx="210" cy="90" r="8" fill="var(--accent)" opacity="0.7"/>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-lg-5">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">Today at a glance</h5>
-          <p class="text-muted-strong mb-3">Balance, allocation, and momentum.</p>
-          <div class="d-flex flex-column gap-3">
-            <div class="d-flex justify-content-between">
-              <span>Total portfolio</span>
-              <strong>$128,450.25</strong>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="section-landing-features py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <p class="text-uppercase text-muted-strong fw-bold mb-2">Key Features</p>
+      <h2 class="display-6 fw-bold">Everything You Need to Succeed</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card card border-0 h-100">
+          <div class="card-body text-center">
+            <div class="feature-icon mb-3">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 4L6 12V28C6 36.8366 24 42 24 42C24 42 42 36.8366 42 28V12L24 4Z" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M24 24V32" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="24" cy="20" r="2" fill="var(--accent)"/>
+              </svg>
             </div>
-            <div class="d-flex justify-content-between">
-              <span>Monthly change</span>
-              <strong class="text-success">+6.2%</strong>
-            </div>
-            <div class="d-flex justify-content-between">
-              <span>Active strategies</span>
-              <strong>3</strong>
-            </div>
+            <h5 class="card-title fw-bold">Secure Portfolio Tracking</h5>
+            <p class="card-text text-muted">Safely manage all your investments in one secure location with enterprise-grade encryption.</p>
           </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card card border-0 h-100">
+          <div class="card-body text-center">
+            <div class="feature-icon mb-3">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 42H42" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 42V20L24 6L40 20V42" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M20 42V28H28V42" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h5 class="card-title fw-bold">Investment Strategies</h5>
+            <p class="card-text text-muted">Create and manage multiple investment strategies tailored to your financial goals.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card card border-0 h-100">
+          <div class="card-body text-center">
+            <div class="feature-icon mb-3">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 38H42V12" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 32L18 20L28 28L40 14" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h5 class="card-title fw-bold">Performance Analytics</h5>
+            <p class="card-text text-muted">Analyze asset performance with detailed charts and real-time portfolio metrics.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card card border-0 h-100">
+          <div class="card-body text-center">
+            <div class="feature-icon mb-3">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="18" stroke="var(--accent)" stroke-width="2"/>
+                <path d="M24 11V24L32 28" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h5 class="card-title fw-bold">Real-Time Updates</h5>
+            <p class="card-text text-muted">Stay informed with real-time data synchronization across all your devices.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section-landing-cta py-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h2 class="display-6 fw-bold mb-3">Ready to Take Control?</h2>
+        <p class="lead text-muted-strong">
+          Join thousands of investors who trust us to help them achieve their financial goals. Create your account today and start building your investment portfolio.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <div class="btn-group-vertical w-100 gap-3">
+          <a class="btn btn-accent btn-lg" href="#/register">Create Account</a>
+          <a class="btn btn-outline-dark btn-lg" href="#/login">Already have an account? Sign In</a>
         </div>
       </div>
     </div>

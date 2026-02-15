@@ -1,3 +1,136 @@
 .card {
   border-radius: 18px;
 }
+
+/* Landing Page Styles */
+.section-landing-hero {
+  background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-1) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-landing-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0.08;
+  animation: float 20s ease-in-out infinite;
+}
+
+.min-vh-50 {
+  min-height: 50vh;
+}
+
+.landing-illustration {
+  position: relative;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-placeholder {
+  width: 100%;
+  max-width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bounce 3s ease-in-out infinite;
+}
+
+.feature-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(var(--accent-rgb), 0.2);
+  border-color: var(--accent);
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--accent-rgb), 0.1);
+  border-radius: 12px;
+}
+
+.section-landing-features {
+  background: var(--bg-1);
+}
+
+.section-landing-cta {
+  background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-1) 100%);
+}
+
+.btn-outline-accent {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-outline-accent:hover {
+  color: var(--bg-1);
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.btn-group-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 991px) {
+  .section-landing-hero::before {
+    display: none;
+  }
+  
+  .landing-illustration {
+    margin-top: 2rem;
+  }
+  
+  .min-vh-50 {
+    min-height: auto;
+    padding: 2rem 0;
+  }
+  
+  .section-landing-cta .col-lg-4 {
+    margin-top: 2rem;
+    text-lg-end: unset;
+  }
+  
+  .btn-group-vertical {
+    flex-direction: column;
+  }
+}
