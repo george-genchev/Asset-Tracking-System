@@ -207,7 +207,13 @@ function showSuccessToast() {
 
   // Redirect after toast disappears
   toastElement.addEventListener("hidden.bs.toast", () => {
-    window.location.hash = "#/assets";
+    // Go back to the asset's strategy page
+    if (currentAsset && currentAsset.strategy_id) {
+      window.location.hash = `#/strategies/${currentAsset.strategy_id}`;
+    } else {
+      // Fallback to assets list
+      window.location.hash = "#/assets";
+    }
   });
 }
 
