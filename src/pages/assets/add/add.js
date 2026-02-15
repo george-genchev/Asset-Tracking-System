@@ -178,7 +178,13 @@ function showSuccessToast() {
 
   // Redirect after toast disappears
   toastElement.addEventListener("hidden.bs.toast", () => {
-    window.location.hash = "#/assets";
+    // If created from a strategy page, go back to that strategy
+    if (selectedStrategyId) {
+      window.location.hash = `#/strategies/${selectedStrategyId}`;
+    } else {
+      // Otherwise go to assets list
+      window.location.hash = "#/assets";
+    }
   });
 }
 
