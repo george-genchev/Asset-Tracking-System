@@ -1,9 +1,10 @@
 import "./strategies.css";
 import html from "./strategies.html?raw";
-import { Modal } from "bootstrap";
+import { Modal, Toast } from "bootstrap";
 import { getCurrentUser, getUserStrategies, deleteStrategy } from "../../lib/supabase.js";
 
 let deleteModal = null;
+let deleteToast = null;
 let strategyToDelete = null;
 
 const page = {
@@ -154,6 +155,9 @@ async function handleDeleteConfirmed() {
       return;
     }
 
+    // Show success toast notification
+    showDeleteSuccessToast();
+
     strategyToDelete = null;
   } catch (error) {
     console.error("Error during delete:", error);
@@ -237,6 +241,28 @@ function initializeDeleteModal() {
     console.log("Delete modal initialized successfully");
   } catch (error) {
     console.error("Failed to initialize modal:", error);
+  }
+}
+
+function showDeleteSuccessToast() {
+  try {
+    const toastElement = document.getElementById("deleteSuccessToast");
+    if (!toastElement) {
+      console.error("Toast element not found");
+      return;
+    }
+
+    // Create and show toast
+    deleteToast = new Toast(toastElement, {
+      autohide: true,
+      delay: 3000
+    });
+
+    deleteToast.show();
+
+    console.log("Success toast displayed");
+  } catch (error) {
+    console.error("Failed to show toast:", error);
   }
 }
 
