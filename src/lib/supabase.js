@@ -70,3 +70,35 @@ export async function onAuthStateChange(callback) {
   const { data: { subscription } } = client.auth.onAuthStateChange(callback);
   return subscription;
 }
+
+// Strategy helpers
+export async function getUserStrategies(userId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("strategies")
+    .select("*")
+    .eq("owner_id", userId)
+    .order("created_at", { ascending: false });
+  return { data, error };
+}
+
+export async function getStrategyById(strategyId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("strategies")
+    .select("*")
+    .eq("id", strategyId)
+    .single();
+  return { data, error };
+}
+
+// Asset helpers
+export async function getAssetsByStrategy(strategyId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("assets")
+    .select("*, targets(name)")
+    .eq("strategy_id", strategyId)
+    .order("order", { ascending: true });
+  return { data, error };
+}

@@ -1,54 +1,47 @@
 <section class="section-panel">
-  <div class="d-flex flex-column flex-lg-row gap-4">
-    <div class="flex-grow-1">
-      <h2 class="fw-bold">Dashboard</h2>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1">Dashboard</h2>
       <p class="text-muted-strong">
-        Monitor asset allocation, recent performance, and strategy health.
+        Monitor your investment strategies and assets.
       </p>
-      <div class="row g-3 mt-3">
-        <div class="col-md-6">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-              <h6 class="text-uppercase text-muted-strong">Allocation</h6>
-              <p class="display-6 fw-bold mb-0">62%</p>
-              <p class="text-muted-strong">Equities vs. other assets</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-              <h6 class="text-uppercase text-muted-strong">Momentum</h6>
-              <p class="display-6 fw-bold mb-0">+3.4%</p>
-              <p class="text-muted-strong">Last 7 days</p>
-            </div>
-          </div>
+    </div>
+  </div>
+
+  <!-- Summary Card -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-uppercase text-muted-strong mb-2">Total Strategies</h6>
+          <p class="display-5 fw-bold mb-0" id="total-strategies">0</p>
         </div>
       </div>
     </div>
-    <div class="summary-card">
+    <div class="col-md-4">
       <div class="card border-0 shadow-sm h-100">
         <div class="card-body">
-          <h5 class="card-title">Strategy focus</h5>
-          <p class="text-muted-strong">Balanced growth portfolio</p>
-          <ul class="list-unstyled mt-3">
-            <li class="d-flex justify-content-between mb-2">
-              <span>Risk level</span>
-              <strong>Moderate</strong>
-            </li>
-            <li class="d-flex justify-content-between mb-2">
-              <span>Cash buffer</span>
-              <strong>12%</strong>
-            </li>
-            <li class="d-flex justify-content-between">
-              <span>Next review</span>
-              <strong>Mar 08</strong>
-            </li>
-          </ul>
-          <button class="btn btn-accent w-100 mt-3" type="button">
-            Review strategy
-          </button>
+          <h6 class="text-uppercase text-muted-strong mb-2">Total Assets</h6>
+          <p class="display-5 fw-bold mb-0" id="total-assets">0</p>
         </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-uppercase text-muted-strong mb-2">Strategies Status</h6>
+          <p class="display-5 fw-bold mb-0" id="strategies-status">Active</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strategies Section -->
+  <div class="mt-5">
+    <h3 class="fw-bold mb-3">Your Strategies</h3>
+    <div id="strategies-container" class="row g-3">
+      <div class="col-12 text-center text-muted">
+        <p>Loading strategies...</p>
       </div>
     </div>
   </div>

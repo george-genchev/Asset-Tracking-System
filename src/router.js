@@ -6,6 +6,7 @@ import indexPage from "./pages/index/index.js";
 import dashboardPage from "./pages/dashboard/dashboard.js";
 import loginPage from "./pages/login/login.js";
 import registerPage from "./pages/register/register.js";
+import strategyPage from "./pages/strategy/strategy.js";
 
 const routes = {
   "/": indexPage,
@@ -13,6 +14,11 @@ const routes = {
   "/login": loginPage,
   "/register": registerPage
 };
+
+// Dynamic routes patterns
+const dynamicRoutes = [
+  { pattern: /^\/strategies\/[^/?]+$/, page: strategyPage }
+];
 
 function getPath() {
   const hash = window.location.hash || "#/";
@@ -37,9 +43,26 @@ function renderLayout(contentHtml) {
   `;
 }
 
+function getRoute(path) {
+  // Check static routes first
+  if (routes[path]) {
+    return routes[path];
+  }
+
+  // Check dynamic routes
+  for (const { pattern, page } of dynamicRoutes) {
+    if (pattern.test(path)) {
+      return page;
+    }
+  }
+
+  // Default to home page
+  return routes["/"];
+}
+
 function handleRoute() {
   const path = getPath();
-  const route = routes[path] || routes["/"];
+  const route = getRoute(path);
 
   renderLayout(route.render());
   document.title = route.title;

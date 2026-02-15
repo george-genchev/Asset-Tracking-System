@@ -1,0 +1,55 @@
+<section class="section-panel">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <a href="#/dashboard" class="text-decoration-none text-muted-strong mb-2 d-inline-block">
+        <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+      </a>
+      <h2 class="fw-bold mb-1" id="strategy-title">Strategy</h2>
+      <p class="text-muted-strong" id="strategy-description"></p>
+    </div>
+  </div>
+
+  <!-- Strategy Info -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-uppercase text-muted-strong mb-2">Total Assets</h6>
+          <p class="display-5 fw-bold mb-0" id="strategy-asset-count">0</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="text-uppercase text-muted-strong mb-2">Created</h6>
+          <p class="display-5 fw-bold mb-0" id="strategy-created-date">-</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assets Section -->
+  <div class="mt-4">
+    <h3 class="fw-bold mb-3">Assets in Strategy</h3>
+    <div class="table-responsive">
+      <table class="table table-hover" id="assets-table">
+        <thead class="table-light">
+          <tr>
+            <th>Ticker</th>
+            <th>Name</th>
+            <th>Exchange</th>
+            <th>Quantity</th>
+            <th>Target</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="assets-tbody">
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">Loading assets...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
