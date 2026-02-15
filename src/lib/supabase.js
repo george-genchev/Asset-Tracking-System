@@ -171,7 +171,7 @@ export async function getAssetById(assetId) {
   return { data, error };
 }
 
-export async function createAsset(strategyId, ticker, name, exchange, quantity, targetId) {
+export async function createAsset(strategyId, ticker, name, exchange, quantity, targetId, action) {
   const client = await getSupabase();
   const { data, error } = await client
     .from("assets")
@@ -182,6 +182,7 @@ export async function createAsset(strategyId, ticker, name, exchange, quantity, 
       exchange,
       quantity,
       target_id: targetId,
+      action: action || null,
       date: new Date().toISOString()
     }])
     .select()

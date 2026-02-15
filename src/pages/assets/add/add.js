@@ -131,6 +131,7 @@ async function handleSubmit(form, submitBtn) {
   const exchange = document.getElementById("exchange").value.trim();
   const quantity = parseFloat(document.getElementById("quantity").value);
   const targetId = document.getElementById("target").value;
+  const action = document.getElementById("action").value.trim();
 
   // Validate data
   if (!ticker || !name || !exchange || quantity <= 0 || !targetId) {
@@ -149,7 +150,8 @@ async function handleSubmit(form, submitBtn) {
       name,
       exchange,
       quantity,
-      targetId
+      targetId,
+      action
     );
 
     if (error) throw error;

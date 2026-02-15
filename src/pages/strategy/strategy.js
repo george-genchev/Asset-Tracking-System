@@ -127,13 +127,18 @@ function renderStrategy(strategy, assets) {
       <td>
         ${asset.targets ? `<span class="badge bg-info text-dark">${escapeHtml(asset.targets.name)}</span>` : '-'}
       </td>
-      <td class="text-center">
-        <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-warning me-2" title="Edit Asset" data-bs-toggle="tooltip">
-          <i class="bi bi-pencil-fill"></i>
-        </a>
-        <button class="btn btn-sm btn-outline-danger delete-asset-btn" data-asset-id="${asset.id}" data-asset-ticker="${escapeHtml(asset.ticker)}" title="Delete Asset" data-bs-toggle="tooltip">
-          <i class="bi bi-trash-fill"></i>
-        </button>
+      <td>
+        <div class="d-flex justify-content-between align-items-center">
+          <span>${asset.action ? escapeHtml(asset.action) : '-'}</span>
+          <div>
+            <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-warning me-2" title="Edit Asset" data-bs-toggle="tooltip">
+              <i class="bi bi-pencil-fill"></i>
+            </a>
+            <button class="btn btn-sm btn-outline-danger delete-asset-btn" data-asset-id="${asset.id}" data-asset-ticker="${escapeHtml(asset.ticker)}" title="Delete Asset" data-bs-toggle="tooltip">
+              <i class="bi bi-trash-fill"></i>
+            </button>
+          </div>
+        </div>
       </td>
     </tr>
   `).join('');

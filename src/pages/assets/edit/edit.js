@@ -87,6 +87,7 @@ function populateForm() {
   document.getElementById("name").value = currentAsset.name || "";
   document.getElementById("exchange").value = currentAsset.exchange || "";
   document.getElementById("quantity").value = currentAsset.quantity || "";
+  document.getElementById("action").value = currentAsset.action || "";
 
   // Set target
   document.getElementById("target").value = currentAsset.target_id || "";
@@ -163,6 +164,7 @@ async function handleSubmit(form, submitBtn) {
   const exchange = document.getElementById("exchange").value.trim();
   const quantity = parseFloat(document.getElementById("quantity").value);
   const targetId = document.getElementById("target").value;
+  const action = document.getElementById("action").value.trim();
 
   // Validate data
   if (!ticker || !name || !exchange || quantity <= 0 || !targetId) {
@@ -180,7 +182,8 @@ async function handleSubmit(form, submitBtn) {
       name,
       exchange,
       quantity,
-      target_id: targetId
+      target_id: targetId,
+      action: action || null
     });
 
     if (error) throw error;
