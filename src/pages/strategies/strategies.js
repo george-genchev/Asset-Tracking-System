@@ -94,13 +94,13 @@ function renderStrategiesList(strategies) {
               </td>
               <td class="text-center">
                 <a href="#/strategies/${strategy.id}" class="btn btn-sm btn-outline-primary" title="View">
-                  <i class="bi bi-eye"></i>
+                  <i class="bi bi-file-earmark-text-fill"></i>
                 </a>
                 <a href="#/strategies/edit/${strategy.id}" class="btn btn-sm btn-outline-warning" title="Edit">
-                  <i class="bi bi-pencil"></i>
+                  <i class="bi bi-gear-fill"></i>
                 </a>
                 <button type="button" class="btn btn-sm btn-outline-danger delete-btn" data-id="${strategy.id}" title="Delete">
-                  <i class="bi bi-trash"></i>
+                  <i class="bi bi-trash-fill"></i>
                 </button>
               </td>
             </tr>
