@@ -7,6 +7,7 @@ import dashboardPage from "./pages/dashboard/dashboard.js";
 import loginPage from "./pages/login/login.js";
 import registerPage from "./pages/register/register.js";
 import strategyPage from "./pages/strategy/strategy.js";
+import notFoundPage from "./pages/not-found/not-found.js";
 
 const routes = {
   "/": indexPage,
@@ -56,8 +57,8 @@ function getRoute(path) {
     }
   }
 
-  // Default to home page
-  return routes["/"];
+  // Return 404 page for non-existent routes
+  return notFoundPage;
 }
 
 function handleRoute() {
