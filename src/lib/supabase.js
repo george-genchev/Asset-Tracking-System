@@ -29,11 +29,17 @@ export async function getSupabase() {
 }
 
 // Auth helpers
-export async function signUp(email, password) {
+export async function signUp(email, password, fullName) {
   const client = await getSupabase();
   const { data, error } = await client.auth.signUp({
     email,
-    password
+    password,
+    options: {
+      data: {
+        display_name: fullName,
+        full_name: fullName
+      }
+    }
   });
   return { data, error };
 }

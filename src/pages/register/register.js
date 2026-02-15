@@ -30,12 +30,13 @@ function initRegisterForm() {
     successAlert.classList.add("d-none");
 
     // Get form values
+    const fullName = document.getElementById("full-name").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const passwordConfirm = document.getElementById("password-confirm").value;
 
     // Validation
-    if (!email || !password || !passwordConfirm) {
+    if (!fullName || !email || !password || !passwordConfirm) {
       showError(errorAlert, "All fields are required");
       return;
     }
@@ -54,7 +55,7 @@ function initRegisterForm() {
     setFormLoading(true, submitBtn, formContainer, loadingState);
 
     try {
-      const { data, error } = await signUp(email, password);
+      const { data, error } = await signUp(email, password, fullName);
 
       if (error) {
         showError(errorAlert, error.message || "Failed to create account");
