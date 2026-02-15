@@ -102,3 +102,42 @@ export async function getAssetsByStrategy(strategyId) {
     .order("order", { ascending: true });
   return { data, error };
 }
+
+// Strategy CRUD operations
+export async function createStrategy(userId, title, description) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("strategies")
+    .insert([{
+      owner_id: userId,
+      title,
+      description
+    }])
+    .select()
+    .single();
+  return { data, error };
+}
+
+export async function updateStrategy(strategyId, title, description) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("strategies")
+    .update({
+      title,
+      description,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", strategyId)
+    .select()
+    .single();
+  return { data, error };
+}
+
+export async function deleteStrategy(strategyId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("strategies")
+    .delete()
+    .eq("id", strategyId);
+  return { data, error };
+}

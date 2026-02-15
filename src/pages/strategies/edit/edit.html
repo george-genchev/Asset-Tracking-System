@@ -1,0 +1,83 @@
+<section class="section-panel">
+  <div class="mb-4">
+    <a href="#/strategies" class="text-decoration-none text-muted-strong mb-2 d-inline-block">
+      <i class="bi bi-arrow-left me-2"></i>Back to Strategies
+    </a>
+    <h2 class="fw-bold mb-1">Edit Strategy</h2>
+    <p class="text-muted-strong">
+      Update your investment strategy details
+    </p>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <div id="loading" class="text-center text-muted">
+            <p>Loading strategy...</p>
+          </div>
+
+          <form id="edit-strategy-form" style="display: none;">
+            <div class="mb-3">
+              <label for="title" class="form-label fw-semibold">Strategy Name *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                placeholder="e.g., Tech Growth Portfolio"
+                required
+              />
+              <div class="invalid-feedback">Please enter a strategy name</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label fw-semibold">Description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                placeholder="e.g., High-growth technology stocks for long-term appreciation"
+                rows="4"
+              ></textarea>
+              <small class="text-muted-strong">Optional - describe your strategy's goal and approach</small>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="btn btn-accent" id="submit-btn">
+                Save Changes
+              </button>
+              <a href="#/strategies" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+
+            <div id="error-message" class="alert alert-danger mt-3" role="alert" style="display: none;"></div>
+          </form>
+
+          <div id="error-loading" class="alert alert-danger" role="alert" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body p-4">
+          <h6 class="fw-bold mb-3">Strategy Information</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <strong>Created:</strong>
+              <span id="created-date" class="text-muted-strong ms-2">-</span>
+            </li>
+            <li class="mb-2">
+              <strong>Updated:</strong>
+              <span id="updated-date" class="text-muted-strong ms-2">-</span>
+            </li>
+            <li class="mb-2">
+              <strong>Assets:</strong>
+              <span id="asset-count" class="text-muted-strong ms-2">0</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
