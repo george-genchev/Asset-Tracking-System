@@ -16,25 +16,10 @@ const page = {
       deleteModal = null;
       strategyToDelete = null;
 
-      const { user, error: userError } = await getCurrentUser();
-      
-      if (userError || !user) {
-        console.error("User not authenticated:", userError);
-        window.location.hash = "#/login";
+      const loaded = await loadStrategies();
+      if (!loaded) {
         return;
       }
-
-      // Fetch user strategies
-      const { data: strategies, error: strategiesError } = await getUserStrategies(user.id);
-      
-      if (strategiesError) {
-        console.error("Error fetching strategies:", strategiesError);
-        showError("Failed to load strategies: " + (strategiesError.message || "Unknown error"));
-        return;
-      }
-
-      // Render strategies list
-      renderStrategiesList(strategies || []);
 
       // Initialize modal on next tick to ensure DOM is ready
       Promise.resolve().then(() => {
@@ -155,14 +140,21 @@ async function handleDeleteConfirmed() {
       return;
     }
 
-    // Success - hide modal and redirect
+    // Success - hide modal and refresh the table
     if (deleteModal) {
       deleteModal.hide();
     }
+    if (confirmBtn) {
+      confirmBtn.disabled = false;
+      confirmBtn.innerHTML = '<i class="bi bi-trash-fill me-2"></i>Delete Permanently';
+    }
+
+    const loaded = await loadStrategies();
+    if (!loaded) {
+      return;
+    }
+
     strategyToDelete = null;
-    
-    // Reload the strategies list
-    location.hash = "#/strategies";
   } catch (error) {
     console.error("Error during delete:", error);
     showError("An error occurred while deleting the strategy");
@@ -173,6 +165,27 @@ async function handleDeleteConfirmed() {
       confirmBtn.innerHTML = '<i class="bi bi-trash-fill me-2"></i>Delete Permanently';
     }
   }
+}
+
+async function loadStrategies() {
+  const { user, error: userError } = await getCurrentUser();
+
+  if (userError || !user) {
+    console.error("User not authenticated:", userError);
+    window.location.hash = "#/login";
+    return false;
+  }
+
+  const { data: strategies, error: strategiesError } = await getUserStrategies(user.id);
+
+  if (strategiesError) {
+    console.error("Error fetching strategies:", strategiesError);
+    showError("Failed to load strategies: " + (strategiesError.message || "Unknown error"));
+    return false;
+  }
+
+  renderStrategiesList(strategies || []);
+  return true;
 }
 
 function showError(message) {
