@@ -50,6 +50,17 @@
           <div class="invalid-feedback">Please enter an asset name</div>
         </div>
 
+        <div class="form-group" id="strategyGroup">
+          <label for="strategy" class="form-label">
+            <i class="bi bi-diagram-3"></i>
+            Strategy <span class="required-indicator">*</span>
+          </label>
+          <select class="form-select" id="strategy" required>
+            <option value="">-- Select a Strategy --</option>
+          </select>
+          <div class="invalid-feedback">Please select a strategy</div>
+        </div>
+
         <div class="form-row">
           <div class="form-group">
             <label for="exchange" class="form-label">
@@ -107,8 +118,6 @@
             Optional action to take on this asset
           </div>
         </div>
-
-        <input type="hidden" id="strategyId">
 
         <div class="btn-group-custom">
           <button type="button" class="btn-custom btn-cancel" id="cancelBtn">

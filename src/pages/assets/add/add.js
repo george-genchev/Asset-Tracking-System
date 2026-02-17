@@ -33,14 +33,16 @@ const page = {
       await loadActions();
       await loadExchanges();
 
-      // If strategy ID is provided in URL, validate and display it
+      // If strategy ID is provided in URL, preselect it
       if (selectedStrategyId) {
-        const strategy = strategies.find(s => s.id === selectedStrategyId);
-        if (strategy) {
-          document.getElementById("strategyId").value = selectedStrategyId;
-          document.getElementById("strategyName").textContent = strategy.title;
-          document.getElementById("strategyInfo").classList.remove("hidden");
+        const strategySelect = document.getElementById("strategy");
+        if (strategySelect) {
+          strategySelect.value = selectedStrategyId;
+          updateStrategyInfo(selectedStrategyId);
         }
+
+        const matchingStrategy = strategies.find(strategy => strategy.id === selectedStrategyId);
+        toggleStrategySelect(!matchingStrategy);
       }
 
       // Setup form handlers
@@ -57,6 +59,20 @@ async function loadStrategies() {
     const { data, error } = await getUserStrategies(currentUser.id);
     if (error) throw error;
     strategies = data || [];
+
+    const strategySelect = document.getElementById("strategy");
+    if (strategySelect) {
+      strategySelect.innerHTML = '<option value="">-- Select a Strategy --</option>';
+
+      if (strategies.length > 0) {
+        strategies.forEach(strategy => {
+          const option = document.createElement("option");
+          option.value = strategy.id;
+          option.textContent = strategy.title;
+          strategySelect.appendChild(option);
+        });
+      }
+    }
   } catch (error) {
     console.error("Error loading strategies:", error);
   }
@@ -129,6 +145,7 @@ function setupFormHandlers() {
   const form = document.getElementById("assetForm");
   const submitBtn = document.getElementById("submitBtn");
   const cancelBtn = document.getElementById("cancelBtn");
+  const strategySelect = document.getElementById("strategy");
 
   if (!form) return;
 
@@ -144,6 +161,12 @@ function setupFormHandlers() {
   cancelBtn.addEventListener("click", () => {
     window.location.hash = "#/assets";
   });
+
+  if (strategySelect) {
+    strategySelect.addEventListener("change", () => {
+      updateStrategyInfo(strategySelect.value);
+    });
+  }
 
   // Real-time validation
   form.querySelectorAll(".form-control, .form-select").forEach(field => {
@@ -163,7 +186,7 @@ async function handleSubmit(form, submitBtn) {
   }
 
   // Validate strategy selection
-  const strategyId = document.getElementById("strategyId").value;
+  const strategyId = document.getElementById("strategy").value;
   if (!strategyId) {
     alert("Please select or specify a strategy");
     return;
@@ -201,6 +224,7 @@ async function handleSubmit(form, submitBtn) {
     if (error) throw error;
 
     if (data) {
+      selectedStrategyId = strategyId;
       // Show success toast and redirect
       showSuccessToast();
     }
@@ -210,6 +234,43 @@ async function handleSubmit(form, submitBtn) {
     alert("Failed to create asset: " + (error.message || "Unknown error"));
     submitBtn.disabled = false;
     submitBtn.classList.remove("loading");
+  }
+}
+
+function updateStrategyInfo(strategyId) {
+  const strategyInfo = document.getElementById("strategyInfo");
+  const strategyName = document.getElementById("strategyName");
+
+  if (!strategyInfo || !strategyName) return;
+
+  if (!strategyId) {
+    strategyInfo.classList.add("hidden");
+    strategyName.textContent = "";
+    return;
+  }
+
+  const strategy = strategies.find(item => item.id === strategyId);
+  if (strategy) {
+    strategyName.textContent = strategy.title;
+    strategyInfo.classList.remove("hidden");
+  } else {
+    strategyInfo.classList.add("hidden");
+    strategyName.textContent = "";
+  }
+}
+
+function toggleStrategySelect(show) {
+  const strategyGroup = document.getElementById("strategyGroup");
+  const strategySelect = document.getElementById("strategy");
+
+  if (!strategyGroup || !strategySelect) return;
+
+  if (show) {
+    strategyGroup.classList.remove("hidden");
+    strategySelect.disabled = false;
+  } else {
+    strategyGroup.classList.add("hidden");
+    strategySelect.disabled = true;
   }
 }
 
