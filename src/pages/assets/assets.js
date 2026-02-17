@@ -89,10 +89,10 @@ function renderAssetsList(assets) {
                 <span class="text-muted-strong">${asset.quantity || '-'}</span>
               </td>
               <td>
-                <span class="text-muted-strong">${asset.target_name || '-'}</span>
+                <span class="text-muted-strong">${asset.targets ? escapeHtml(asset.targets.name) : '-'}</span>
               </td>
               <td>
-                <span class="text-muted-strong">${escapeHtml(asset.strategy_title) || '-'}</span>
+                <span class="text-muted-strong">${asset.strategies ? escapeHtml(asset.strategies.title) : '-'}</span>
               </td>
               <td>
                 <span class="text-muted-strong">${asset.actions ? escapeHtml(asset.actions.name) : '-'}</span>
