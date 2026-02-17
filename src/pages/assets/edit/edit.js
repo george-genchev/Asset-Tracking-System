@@ -1,7 +1,7 @@
 import "./edit.css";
 import html from "./edit.html?raw";
 import { Toast } from "bootstrap";
-import { getCurrentUser, getAssetById, updateAsset, getTargets } from "/src/lib/supabase.js";
+import { getCurrentUser, getAssetById, updateAsset, getTargets, getActions } from "/src/lib/supabase.js";
 
 let currentUser = null;
 let currentAsset = null;
@@ -30,6 +30,7 @@ const page = {
       // Load asset data
       await loadAsset(assetId);
       await loadTargets();
+      await loadActions();
 
       if (currentAsset) {
         populateForm();
@@ -87,7 +88,7 @@ function populateForm() {
   document.getElementById("name").value = currentAsset.name || "";
   document.getElementById("exchange").value = currentAsset.exchange || "";
   document.getElementById("quantity").value = currentAsset.quantity || "";
-  document.getElementById("action").value = currentAsset.action || "";
+  document.getElementById("action").value = currentAsset.action_id || "";
 
   // Set target
   document.getElementById("target").value = currentAsset.target_id || "";
@@ -117,6 +118,27 @@ async function loadTargets() {
     }
   } catch (error) {
     console.error("Error loading targets:", error);
+  }
+}
+
+async function loadActions() {
+  try {
+    const { data, error } = await getActions();
+    if (error) throw error;
+
+    const actionSelect = document.getElementById("action");
+    actionSelect.innerHTML = '<option value="">-- No Action --</option>';
+
+    if (data && data.length > 0) {
+      data.forEach(action => {
+        const option = document.createElement("option");
+        option.value = action.id;
+        option.textContent = action.name;
+        actionSelect.appendChild(option);
+      });
+    }
+  } catch (error) {
+    console.error("Error loading actions:", error);
   }
 }
 
@@ -164,7 +186,7 @@ async function handleSubmit(form, submitBtn) {
   const exchange = document.getElementById("exchange").value.trim();
   const quantity = parseFloat(document.getElementById("quantity").value);
   const targetId = document.getElementById("target").value;
-  const action = document.getElementById("action").value.trim();
+  const actionId = document.getElementById("action").value;
 
   // Validate data
   if (!ticker || !name || !exchange || quantity <= 0 || !targetId) {
@@ -183,7 +205,7 @@ async function handleSubmit(form, submitBtn) {
       exchange,
       quantity,
       target_id: targetId,
-      action: action || null
+      action_id: actionId || null
     });
 
     if (error) throw error;

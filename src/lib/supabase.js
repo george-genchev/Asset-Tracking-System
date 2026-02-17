@@ -97,7 +97,7 @@ export async function getAssetsByStrategy(strategyId) {
   const client = await getSupabase();
   const { data, error } = await client
     .from("assets")
-    .select("*, targets(name)")
+    .select("*, targets(name), actions(id, name)")
     .eq("strategy_id", strategyId)
     .order("created_at", { ascending: true });
   return { data, error };
@@ -150,7 +150,8 @@ export async function getAllAssets(userId) {
     .select(`
       *,
       strategies(id, title),
-      targets(id, name)
+      targets(id, name),
+      actions(id, name)
     `)
     .eq("strategies.owner_id", userId)
     .order("created_at", { ascending: false });
@@ -164,14 +165,15 @@ export async function getAssetById(assetId) {
     .select(`
       *,
       strategies(id, title, owner_id),
-      targets(id, name)
+      targets(id, name),
+      actions(id, name)
     `)
     .eq("id", assetId)
     .single();
   return { data, error };
 }
 
-export async function createAsset(strategyId, ticker, name, exchange, quantity, targetId, action) {
+export async function createAsset(strategyId, ticker, name, exchange, quantity, targetId, actionId) {
   const client = await getSupabase();
   const { data, error } = await client
     .from("assets")
@@ -182,7 +184,7 @@ export async function createAsset(strategyId, ticker, name, exchange, quantity, 
       exchange,
       quantity,
       target_id: targetId,
-      action: action || null,
+      action_id: actionId || null,
       date: new Date().toISOString()
     }])
     .select()
@@ -218,6 +220,15 @@ export async function getTargets() {
   const client = await getSupabase();
   const { data, error } = await client
     .from("targets")
+    .select("*")
+    .order("name", { ascending: true });
+  return { data, error };
+}
+
+export async function getActions() {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("actions")
     .select("*")
     .order("name", { ascending: true });
   return { data, error };

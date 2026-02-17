@@ -95,7 +95,7 @@ function renderAssetsList(assets) {
                 <span class="text-muted-strong">${escapeHtml(asset.strategy_title) || '-'}</span>
               </td>
               <td>
-                <span class="text-muted-strong">${asset.action ? escapeHtml(asset.action) : '-'}</span>
+                <span class="text-muted-strong">${asset.actions ? escapeHtml(asset.actions.name) : '-'}</span>
               </td>
               <td class="text-center">
                 <a href="#/assets/${asset.id}" class="btn btn-sm btn-outline-primary" title="View">

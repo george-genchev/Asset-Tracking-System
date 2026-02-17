@@ -1,7 +1,7 @@
 import "./add.css";
 import html from "./add.html?raw";
 import { Toast } from "bootstrap";
-import { getCurrentUser, getUserStrategies, createAsset, getTargets } from "/src/lib/supabase.js";
+import { getCurrentUser, getUserStrategies, createAsset, getTargets, getActions } from "/src/lib/supabase.js";
 
 let currentUser = null;
 let selectedStrategyId = null;
@@ -30,6 +30,7 @@ const page = {
       // Load strategies and targets to verify ownership
       await loadStrategies();
       await loadTargets();
+      await loadActions();
 
       // If strategy ID is provided in URL, validate and display it
       if (selectedStrategyId) {
@@ -78,6 +79,27 @@ async function loadTargets() {
     }
   } catch (error) {
     console.error("Error loading targets:", error);
+  }
+}
+
+async function loadActions() {
+  try {
+    const { data, error } = await getActions();
+    if (error) throw error;
+
+    const actionSelect = document.getElementById("action");
+    actionSelect.innerHTML = '<option value="">-- No Action --</option>';
+
+    if (data && data.length > 0) {
+      data.forEach(action => {
+        const option = document.createElement("option");
+        option.value = action.id;
+        option.textContent = action.name;
+        actionSelect.appendChild(option);
+      });
+    }
+  } catch (error) {
+    console.error("Error loading actions:", error);
   }
 }
 
@@ -131,7 +153,7 @@ async function handleSubmit(form, submitBtn) {
   const exchange = document.getElementById("exchange").value.trim();
   const quantity = parseFloat(document.getElementById("quantity").value);
   const targetId = document.getElementById("target").value;
-  const action = document.getElementById("action").value.trim();
+  const actionId = document.getElementById("action").value;
 
   // Validate data
   if (!ticker || !name || !exchange || quantity <= 0 || !targetId) {
@@ -151,7 +173,7 @@ async function handleSubmit(form, submitBtn) {
       exchange,
       quantity,
       targetId,
-      action
+      actionId || null
     );
 
     if (error) throw error;

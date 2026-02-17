@@ -129,7 +129,7 @@ function renderStrategy(strategy, assets) {
       </td>
       <td>
         <div class="d-flex justify-content-between align-items-center">
-          <span>${asset.action ? escapeHtml(asset.action) : '-'}</span>
+          <span>${asset.actions ? escapeHtml(asset.actions.name) : '-'}</span>
           <div>
             <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-warning me-2" title="Edit Asset" data-bs-toggle="tooltip">
               <i class="bi bi-pencil-fill"></i>
