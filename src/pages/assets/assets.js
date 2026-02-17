@@ -83,7 +83,7 @@ function renderAssetsList(assets) {
                 <span class="text-muted-strong">${escapeHtml(asset.name) || '-'}</span>
               </td>
               <td>
-                <span class="text-muted-strong">${escapeHtml(asset.exchange) || '-'}</span>
+                <span class="text-muted-strong">${asset.exchanges ? escapeHtml(asset.exchanges.name) : '-'}</span>
               </td>
               <td>
                 <span class="text-muted-strong">${asset.quantity || '-'}</span>

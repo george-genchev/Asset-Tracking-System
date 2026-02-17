@@ -1,7 +1,7 @@
 import "./edit.css";
 import html from "./edit.html?raw";
 import { Toast } from "bootstrap";
-import { getCurrentUser, getAssetById, updateAsset, getTargets, getActions } from "/src/lib/supabase.js";
+import { getCurrentUser, getAssetById, updateAsset, getTargets, getActions, getExchanges } from "/src/lib/supabase.js";
 
 let currentUser = null;
 let currentAsset = null;
@@ -31,6 +31,7 @@ const page = {
       await loadAsset(assetId);
       await loadTargets();
       await loadActions();
+      await loadExchanges();
 
       if (currentAsset) {
         populateForm();
@@ -86,7 +87,7 @@ function populateForm() {
   document.getElementById("strategyId").value = currentAsset.strategy_id;
   document.getElementById("ticker").value = currentAsset.ticker || "";
   document.getElementById("name").value = currentAsset.name || "";
-  document.getElementById("exchange").value = currentAsset.exchange || "";
+  document.getElementById("exchange").value = currentAsset.exchange_id || "";
   document.getElementById("quantity").value = currentAsset.quantity || "";
   document.getElementById("action").value = currentAsset.action_id || "";
 
@@ -142,6 +143,27 @@ async function loadActions() {
   }
 }
 
+async function loadExchanges() {
+  try {
+    const { data, error } = await getExchanges();
+    if (error) throw error;
+
+    const exchangeSelect = document.getElementById("exchange");
+    exchangeSelect.innerHTML = '<option value="">-- Select an Exchange --</option>';
+
+    if (data && data.length > 0) {
+      data.forEach(exchange => {
+        const option = document.createElement("option");
+        option.value = exchange.id;
+        option.textContent = exchange.name;
+        exchangeSelect.appendChild(option);
+      });
+    }
+  } catch (error) {
+    console.error("Error loading exchanges:", error);
+  }
+}
+
 function setupFormHandlers() {
   const form = document.getElementById("assetForm");
   const submitBtn = document.getElementById("submitBtn");
@@ -183,13 +205,13 @@ async function handleSubmit(form, submitBtn) {
   const assetId = document.getElementById("assetId").value;
   const ticker = document.getElementById("ticker").value.trim();
   const name = document.getElementById("name").value.trim();
-  const exchange = document.getElementById("exchange").value.trim();
+  const exchangeId = document.getElementById("exchange").value;
   const quantity = parseFloat(document.getElementById("quantity").value);
   const targetId = document.getElementById("target").value;
   const actionId = document.getElementById("action").value;
 
   // Validate data
-  if (!ticker || !name || !exchange || quantity <= 0 || !targetId) {
+  if (!ticker || !name || !exchangeId || quantity <= 0 || !targetId) {
     alert("Please fill in all required fields correctly");
     return;
   }
@@ -202,7 +224,7 @@ async function handleSubmit(form, submitBtn) {
     const { error } = await updateAsset(assetId, {
       ticker,
       name,
-      exchange,
+      exchange_id: exchangeId,
       quantity,
       target_id: targetId,
       action_id: actionId || null

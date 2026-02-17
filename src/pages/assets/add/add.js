@@ -1,7 +1,7 @@
 import "./add.css";
 import html from "./add.html?raw";
 import { Toast } from "bootstrap";
-import { getCurrentUser, getUserStrategies, createAsset, getTargets, getActions } from "/src/lib/supabase.js";
+import { getCurrentUser, getUserStrategies, createAsset, getTargets, getActions, getExchanges } from "/src/lib/supabase.js";
 
 let currentUser = null;
 let selectedStrategyId = null;
@@ -31,6 +31,7 @@ const page = {
       await loadStrategies();
       await loadTargets();
       await loadActions();
+      await loadExchanges();
 
       // If strategy ID is provided in URL, validate and display it
       if (selectedStrategyId) {
@@ -103,6 +104,27 @@ async function loadActions() {
   }
 }
 
+async function loadExchanges() {
+  try {
+    const { data, error } = await getExchanges();
+    if (error) throw error;
+
+    const exchangeSelect = document.getElementById("exchange");
+    exchangeSelect.innerHTML = '<option value="">-- Select an Exchange --</option>';
+
+    if (data && data.length > 0) {
+      data.forEach(exchange => {
+        const option = document.createElement("option");
+        option.value = exchange.id;
+        option.textContent = exchange.name;
+        exchangeSelect.appendChild(option);
+      });
+    }
+  } catch (error) {
+    console.error("Error loading exchanges:", error);
+  }
+}
+
 function setupFormHandlers() {
   const form = document.getElementById("assetForm");
   const submitBtn = document.getElementById("submitBtn");
@@ -150,13 +172,13 @@ async function handleSubmit(form, submitBtn) {
   // Collect form data
   const ticker = document.getElementById("ticker").value.trim();
   const name = document.getElementById("name").value.trim();
-  const exchange = document.getElementById("exchange").value.trim();
+  const exchangeId = document.getElementById("exchange").value;
   const quantity = parseFloat(document.getElementById("quantity").value);
   const targetId = document.getElementById("target").value;
   const actionId = document.getElementById("action").value;
 
   // Validate data
-  if (!ticker || !name || !exchange || quantity <= 0 || !targetId) {
+  if (!ticker || !name || !exchangeId || quantity <= 0 || !targetId) {
     alert("Please fill in all required fields correctly");
     return;
   }
@@ -170,7 +192,7 @@ async function handleSubmit(form, submitBtn) {
       strategyId,
       ticker,
       name,
-      exchange,
+      exchangeId,
       quantity,
       targetId,
       actionId || null

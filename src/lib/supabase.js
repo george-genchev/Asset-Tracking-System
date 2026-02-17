@@ -97,7 +97,7 @@ export async function getAssetsByStrategy(strategyId) {
   const client = await getSupabase();
   const { data, error } = await client
     .from("assets")
-    .select("*, targets(name), actions(id, name)")
+    .select("*, targets(name), actions(id, name), exchanges(id, name)")
     .eq("strategy_id", strategyId)
     .order("created_at", { ascending: true });
   return { data, error };
@@ -151,7 +151,8 @@ export async function getAllAssets(userId) {
       *,
       strategies(id, title),
       targets(id, name),
-      actions(id, name)
+      actions(id, name),
+      exchanges(id, name)
     `)
     .eq("strategies.owner_id", userId)
     .order("created_at", { ascending: false });
@@ -166,14 +167,15 @@ export async function getAssetById(assetId) {
       *,
       strategies(id, title, owner_id),
       targets(id, name),
-      actions(id, name)
+      actions(id, name),
+      exchanges(id, name)
     `)
     .eq("id", assetId)
     .single();
   return { data, error };
 }
 
-export async function createAsset(strategyId, ticker, name, exchange, quantity, targetId, actionId) {
+export async function createAsset(strategyId, ticker, name, exchangeId, quantity, targetId, actionId) {
   const client = await getSupabase();
   const { data, error } = await client
     .from("assets")
@@ -181,7 +183,7 @@ export async function createAsset(strategyId, ticker, name, exchange, quantity, 
       strategy_id: strategyId,
       ticker,
       name,
-      exchange,
+      exchange_id: exchangeId,
       quantity,
       target_id: targetId,
       action_id: actionId || null,
@@ -229,6 +231,15 @@ export async function getActions() {
   const client = await getSupabase();
   const { data, error } = await client
     .from("actions")
+    .select("*")
+    .order("name", { ascending: true });
+  return { data, error };
+}
+
+export async function getExchanges() {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("exchanges")
     .select("*")
     .order("name", { ascending: true });
   return { data, error };

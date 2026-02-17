@@ -122,7 +122,7 @@ function renderStrategy(strategy, assets) {
         <strong>${escapeHtml(asset.ticker)}</strong>
       </td>
       <td>${escapeHtml(asset.name)}</td>
-      <td>${escapeHtml(asset.exchange || '-')}</td>
+      <td>${asset.exchanges ? escapeHtml(asset.exchanges.name) : '-'}</td>
       <td>${asset.quantity}</td>
       <td>
         ${asset.targets ? `<span class="badge bg-info text-dark">${escapeHtml(asset.targets.name)}</span>` : '-'}
