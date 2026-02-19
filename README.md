@@ -13,22 +13,30 @@ A comprehensive FinTech application for managing and tracking financial assets w
 - ✅ User registration and login with email/password
 - ✅ Role-based access control (admin/user)
 - ✅ Secure portfolio tracking with RLS
-- ✅ Multiple investment strategies
-- ✅ Asset management with targets and order types
+- ✅ Strategy management (list, add, edit, delete)
+- ✅ Strategy details view with related assets
+- ✅ Asset management (list, add, edit, delete)
+- ✅ Asset metadata support (target, action, exchange)
 - ✅ Seed data with 3 demo users and realistic investments
 - ✅ Responsive design for mobile and desktop
+- ✅ Modern app favicon (`favicon.ico`)
 
 ## Pages and Routing
 
 ### Public Pages
-- `/` - Landing page with feature highlights
-- `/register` - User registration form
-- `/login` - User login form
+- `#/` - Landing page with feature highlights
+- `#/register` - User registration form
+- `#/login` - User login form
 
 ### Protected Pages
-- `/dashboard` - Portfolio overview and management
-- `/strategies` - Investment strategies (planned)
-- `/assets` - Asset management (planned)
+- `#/dashboard` - Portfolio overview and management
+- `#/strategies` - Strategies list
+- `#/strategies/add` - Create strategy
+- `#/strategies/edit/:id` - Edit strategy
+- `#/strategies/:id` - Strategy details
+- `#/assets` - Assets list
+- `#/assets/add` - Create asset
+- `#/assets/edit/:id` - Edit asset
 
 ## Project Structure
 ```
@@ -41,14 +49,19 @@ src/
 │   ├── login/       (Login form)
 │   ├── register/    (Register form)
 │   ├── dashboard/   (Portfolio dashboard)
-│   ├── strategies/  (Strategies page - stub)
-│   └── assets/      (Assets page - stub)
+│   ├── strategy/    (Strategy details page)
+│   ├── strategies/  (Strategies list + add/edit)
+│   ├── assets/      (Assets list + add/edit)
+│   └── not-found/   (404 page)
 ├── lib/
 │   └── supabase.js  (Auth & Supabase client)
 ├── main.js          (App entry point)
 ├── router.js        (Hash-based router)
 └── styles.css       (Global styles)
 ```
+
+Root-level assets:
+- `favicon.ico` (modern application icon)
 
 ## Setup Instructions
 
@@ -58,8 +71,12 @@ npm install
 ```
 
 ### 2. Configure Supabase
-1. Copy `.env.example` to `.env.local`
-2. Add your Supabase credentials from your project settings
+1. Create `.env.local` in the project root
+2. Add your Supabase credentials from your project settings:
+   ```env
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key-here
+   ```
 3. See [AUTH_SETUP.md](AUTH_SETUP.md) for detailed instructions
 
 ### 3. Run Development Server
@@ -83,7 +100,7 @@ Pre-seeded demo accounts for testing:
 | bob@example.com | password123 | User |
 | carol@example.com | password123 | User |
 
-Quick test: Go to `/login`, click a demo account button, and sign in.
+Quick test: Go to `#/login`, click a demo account button, and sign in.
 
 ## Database Schema
 
@@ -93,9 +110,11 @@ Quick test: Go to `/login`, click a demo account button, and sign in.
 
 ### Financial Data
 - `public.strategies` - Investment strategies (owned by users)
-- `public.assets` - Assets in strategies (ticker, quantity, exchange, etc.)
-- `public.targets` - Asset targets (Open Position, Close Position, Rebalancing)
-- `public.orders` - Order types (Market, Market OPG)
+- `public.assets` - Assets in strategies (ticker, quantity, target/action/exchange)
+- `public.targets` - Asset targets
+- `public.actions` - Asset actions
+- `public.exchanges` - Asset exchanges
+- `public.orders` - Order types
 
 ### Security
 - Row-Level Security (RLS) policies on all tables
@@ -132,3 +151,4 @@ User Registration/Login
 - Environment variables must start with `VITE_` to be accessible in browser
 - Auto-confirm demo users for immediate testing (real auth requires email confirmation)
 - See AUTH_SETUP.md for troubleshooting and auth function documentation
+- Browsers cache favicons aggressively; use hard refresh (`Ctrl+F5`) after favicon updates
