@@ -117,9 +117,11 @@ function renderStrategy(strategy, assets) {
   }
 
   tbody.innerHTML = assets.map((asset, index) => `
-    <tr>
+    <tr class="asset-row" data-asset-id="${asset.id}">
       <td>
-        <strong>${escapeHtml(asset.ticker)}</strong>
+        <a href="#/assets/edit/${asset.id}" class="fw-semibold text-decoration-none" title="View Asset">
+          ${escapeHtml(asset.ticker)}
+        </a>
       </td>
       <td>${escapeHtml(asset.name)}</td>
       <td>${asset.exchanges ? escapeHtml(asset.exchanges.name) : '-'}</td>
@@ -146,6 +148,20 @@ function renderStrategy(strategy, assets) {
   // Attach delete button event listeners
   document.querySelectorAll('.delete-asset-btn').forEach(btn => {
     btn.addEventListener('click', handleDeleteClick);
+  });
+
+  document.querySelectorAll('.asset-row').forEach(row => {
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', (e) => {
+      if (e.target.closest('a, button')) {
+        return;
+      }
+
+      const assetId = row.dataset.assetId;
+      if (assetId) {
+        window.location.hash = `#/assets/edit/${assetId}`;
+      }
+    });
   });
 }
 
