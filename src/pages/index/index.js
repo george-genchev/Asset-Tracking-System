@@ -67,7 +67,7 @@ async function handleSignOut(e) {
   e.preventDefault();
   try {
     await signOut();
-    window.location.hash = "#/";
+    window.location.reload();
   } catch (error) {
     console.error("Error signing out:", error);
   }
