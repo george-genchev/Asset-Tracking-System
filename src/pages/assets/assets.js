@@ -99,14 +99,14 @@ function renderAssetsList(assets) {
               <td>
                 <span class="text-muted-strong">${asset.actions ? escapeHtml(asset.actions.name) : '-'}</span>
               </td>
-              <td class="text-center">
-                <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-primary" title="View">
+              <td class="text-center asset-actions">
+                <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-primary hover-action" title="View">
                   <i class="bi bi-file-earmark-text-fill"></i>
                 </a>
-                <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-warning" title="Edit">
+                <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-warning hover-action" title="Edit">
                   <i class="bi bi-gear-fill"></i>
                 </a>
-                <button type="button" class="btn btn-sm btn-outline-danger delete-btn" data-id="${asset.id}" title="Delete">
+                <button type="button" class="btn btn-sm btn-outline-danger delete-btn hover-action" data-id="${asset.id}" title="Delete">
                   <i class="bi bi-trash-fill"></i>
                 </button>
               </td>
