@@ -75,9 +75,11 @@ function renderAssetsList(assets) {
         </thead>
         <tbody>
           ${assets.map(asset => `
-            <tr>
+            <tr class="asset-row" data-id="${asset.id}">
               <td>
-                <strong>${escapeHtml(asset.ticker)}</strong>
+                <a href="#/assets/edit/${asset.id}" class="fw-semibold text-decoration-none" title="View asset">
+                  ${escapeHtml(asset.ticker)}
+                </a>
               </td>
               <td>
                 <span class="text-muted-strong">${escapeHtml(asset.name) || '-'}</span>
@@ -98,7 +100,7 @@ function renderAssetsList(assets) {
                 <span class="text-muted-strong">${asset.actions ? escapeHtml(asset.actions.name) : '-'}</span>
               </td>
               <td class="text-center">
-                <a href="#/assets/${asset.id}" class="btn btn-sm btn-outline-primary" title="View">
+                <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-primary" title="View">
                   <i class="bi bi-file-earmark-text-fill"></i>
                 </a>
                 <a href="#/assets/edit/${asset.id}" class="btn btn-sm btn-outline-warning" title="Edit">
@@ -121,6 +123,20 @@ function renderAssetsList(assets) {
       e.preventDefault();
       assetToDelete = btn.dataset.id;
       showDeleteConfirmation();
+    });
+  });
+
+  document.querySelectorAll(".asset-row").forEach(row => {
+    row.style.cursor = "pointer";
+    row.addEventListener("click", (e) => {
+      if (e.target.closest("a, button")) {
+        return;
+      }
+
+      const assetId = row.dataset.id;
+      if (assetId) {
+        window.location.hash = `#/assets/edit/${assetId}`;
+      }
     });
   });
 }
