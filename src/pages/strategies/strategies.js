@@ -62,9 +62,11 @@ function renderStrategiesList(strategies) {
         </thead>
         <tbody>
           ${strategies.map(strategy => `
-            <tr>
+            <tr class="strategy-row" data-id="${strategy.id}">
               <td>
-                <strong>${escapeHtml(strategy.title)}</strong>
+                <a href="#/strategies/${strategy.id}" class="fw-semibold text-decoration-none" title="View assets in strategy">
+                  ${escapeHtml(strategy.title)}
+                </a>
               </td>
               <td>
                 <span class="text-muted-strong">${strategy.description ? escapeHtml(strategy.description) : '-'}</span>
@@ -96,6 +98,20 @@ function renderStrategiesList(strategies) {
       e.preventDefault();
       strategyToDelete = btn.dataset.id;
       showDeleteConfirmation();
+    });
+  });
+
+  document.querySelectorAll(".strategy-row").forEach(row => {
+    row.style.cursor = "pointer";
+    row.addEventListener("click", (e) => {
+      if (e.target.closest("a, button")) {
+        return;
+      }
+
+      const strategyId = row.dataset.id;
+      if (strategyId) {
+        window.location.hash = `#/strategies/${strategyId}`;
+      }
     });
   });
 }
