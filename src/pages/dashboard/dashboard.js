@@ -1,6 +1,12 @@
 import "./dashboard.css";
 import html from "./dashboard.html?raw";
-import { getCurrentUser, getUserStrategies, getAssetsByStrategy } from "../../lib/supabase.js";
+import {
+  getCurrentUser,
+  getUserStrategies,
+  getAssetsByStrategy,
+  getFirstStrategyImageAttachment,
+  getStrategyAttachmentSignedUrl
+} from "../../lib/supabase.js";
 
 const page = {
   title: "Dashboard | Asset Tracking System",
@@ -32,9 +38,11 @@ const page = {
       const strategiesWithAssets = await Promise.all(
         (strategies || []).map(async (strategy) => {
           const { data: assets, error: assetsError } = await getAssetsByStrategy(strategy.id);
+          const coverImageUrl = await getStrategyCoverImageUrl(strategy.id);
           return {
             ...strategy,
-            assets: assetsError ? [] : (assets || [])
+            assets: assetsError ? [] : (assets || []),
+            coverImageUrl
           };
         })
       );
@@ -72,6 +80,12 @@ function renderStrategies(strategies) {
   container.innerHTML = strategies.map(strategy => `
     <div class="col-lg-6">
       <div class="card border-0 shadow-sm h-100">
+        <div class="dashboard-strategy-cover ${strategy.coverImageUrl ? "" : "dashboard-strategy-cover-empty"}">
+          ${strategy.coverImageUrl
+            ? `<img src="${strategy.coverImageUrl}" alt="${escapeHtml(strategy.title)} cover image" loading="lazy" />`
+            : `<i class="bi bi-image" aria-hidden="true"></i>`
+          }
+        </div>
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start mb-3">
             <div>
@@ -117,6 +131,21 @@ function renderStrategies(strategies) {
       </div>
     </div>
   `).join('');
+}
+
+async function getStrategyCoverImageUrl(strategyId) {
+  const { data: firstImage, error: imageError } = await getFirstStrategyImageAttachment(strategyId);
+
+  if (imageError || !firstImage?.file_path) {
+    return null;
+  }
+
+  const { data: signedData, error: signedError } = await getStrategyAttachmentSignedUrl(firstImage.file_path);
+  if (signedError || !signedData?.signedUrl) {
+    return null;
+  }
+
+  return signedData.signedUrl;
 }
 
 function showError(message) {

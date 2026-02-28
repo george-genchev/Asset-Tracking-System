@@ -257,6 +257,20 @@ export async function getStrategyAttachments(strategyId) {
   return { data, error };
 }
 
+export async function getFirstStrategyImageAttachment(strategyId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("strategy_attachments")
+    .select("file_path, mime_type, file_name, created_at")
+    .eq("strategy_id", strategyId)
+    .or("mime_type.like.image/%,file_name.ilike.%.png,file_name.ilike.%.jpg,file_name.ilike.%.jpeg,file_name.ilike.%.webp,file_name.ilike.%.gif,file_name.ilike.%.bmp,file_name.ilike.%.svg")
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  return { data, error };
+}
+
 export async function createStrategyAttachment(attachmentData) {
   const client = await getSupabase();
   const { user } = await getCurrentUser();
