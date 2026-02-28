@@ -244,3 +244,95 @@ export async function getExchanges() {
     .order("name", { ascending: true });
   return { data, error };
 }
+
+const STRATEGY_ATTACHMENTS_BUCKET = "strategy-attachments";
+
+export async function getStrategyAttachments(strategyId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("strategy_attachments")
+    .select("*")
+    .eq("strategy_id", strategyId)
+    .order("created_at", { ascending: false });
+  return { data, error };
+}
+
+export async function createStrategyAttachment(attachmentData) {
+  const client = await getSupabase();
+  const { user } = await getCurrentUser();
+
+  const { data, error } = await client
+    .from("strategy_attachments")
+    .insert([
+      {
+        ...attachmentData,
+        owner_id: user?.id || null
+      }
+    ])
+    .select()
+    .single();
+
+  return { data, error };
+}
+
+export async function deleteStrategyAttachment(attachmentId) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("strategy_attachments")
+    .delete()
+    .eq("id", attachmentId)
+    .select()
+    .single();
+
+  return { data, error };
+}
+
+export async function uploadStrategyAttachment(strategyId, file) {
+  const client = await getSupabase();
+  const safeName = sanitizeFileName(file.name);
+  const uniquePrefix = `${Date.now()}-${crypto.randomUUID()}`;
+  const path = `${strategyId}/${uniquePrefix}-${safeName}`;
+
+  const { data, error } = await client
+    .storage
+    .from(STRATEGY_ATTACHMENTS_BUCKET)
+    .upload(path, file, {
+      upsert: false,
+      contentType: file.type || "application/octet-stream"
+    });
+
+  if (error) {
+    return { path: null, data: null, error };
+  }
+
+  return { path, data, error: null };
+}
+
+export async function removeStrategyAttachmentFile(path) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .storage
+    .from(STRATEGY_ATTACHMENTS_BUCKET)
+    .remove([path]);
+
+  return { data, error };
+}
+
+export async function getStrategyAttachmentSignedUrl(path) {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .storage
+    .from(STRATEGY_ATTACHMENTS_BUCKET)
+    .createSignedUrl(path, 60 * 60);
+
+  return { data, error };
+}
+
+function sanitizeFileName(fileName) {
+  return fileName
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9.-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}

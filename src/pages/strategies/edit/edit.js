@@ -2,8 +2,10 @@ import "../form.css";
 import html from "./edit.html?raw";
 import { Toast } from "bootstrap";
 import { getCurrentUser, getStrategyById, updateStrategy, getAssetsByStrategy } from "../../../lib/supabase.js";
+import { createStrategyAttachmentEditor } from "../../../components/strategy-attachments/strategy-attachments.js";
 
 let strategyId = null;
+let attachmentEditor = null;
 
 const page = {
   title: "Edit Strategy | Asset Tracking System",
@@ -60,6 +62,18 @@ const page = {
       document.getElementById("updated-date").textContent = formatDate(strategy.updated_at);
       document.getElementById("asset-count").textContent = assets?.length || 0;
 
+      attachmentEditor = createStrategyAttachmentEditor({
+        strategyId,
+        containerId: "attachments-section",
+        inputId: "attachments-input",
+        listId: "attachments-list",
+        emptyId: "attachments-empty",
+        errorId: "attachments-error",
+        countId: "attachment-count"
+      });
+
+      await attachmentEditor.init();
+
       // Handle form submission
       const form = document.getElementById("edit-strategy-form");
       const submitBtn = document.getElementById("submit-btn");
@@ -85,6 +99,16 @@ const page = {
           if (error) {
             console.error("Error updating strategy:", error);
             errorMessage.textContent = error.message || "Failed to update strategy";
+            errorMessage.style.display = "block";
+            submitBtn.disabled = false;
+            return;
+          }
+
+          try {
+            await attachmentEditor.commitChanges();
+          } catch (attachmentError) {
+            console.error("Error applying attachment changes:", attachmentError);
+            errorMessage.textContent = attachmentError.message || "Failed to save attachment changes";
             errorMessage.style.display = "block";
             submitBtn.disabled = false;
             return;

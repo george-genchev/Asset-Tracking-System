@@ -78,6 +78,33 @@
           </ul>
         </div>
       </div>
+
+      <div class="card border-0 shadow-sm bg-light attachments-card mt-3" id="attachments-section">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold mb-0">Attachments</h6>
+            <span class="badge text-bg-light" id="attachment-count">0</span>
+          </div>
+
+          <div class="attachments-dropzone mb-3">
+            <label for="attachments-input" class="form-label fw-semibold">Attach files</label>
+            <input
+              type="file"
+              class="form-control"
+              id="attachments-input"
+              multiple
+              aria-describedby="attachments-help"
+            />
+            <p class="attachments-help mt-2" id="attachments-help">
+              Images are previewed here. Other files are shown with file icons. Changes are saved only after "Save Changes".
+            </p>
+          </div>
+
+          <ul class="list-unstyled d-flex flex-column gap-2 mb-0" id="attachments-list"></ul>
+          <p class="attachments-empty mt-2" id="attachments-empty">No attachments added yet.</p>
+          <div id="attachments-error" class="alert alert-danger mt-3 mb-0" role="alert" style="display: none;"></div>
+        </div>
+      </div>
     </div>
   </div>
 
