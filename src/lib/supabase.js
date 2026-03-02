@@ -304,6 +304,19 @@ export async function getAdminLookupRecordById(tableName, recordId) {
   return { data, error };
 }
 
+export async function createAdminLookupRecord(tableName, name) {
+  assertLookupTable(tableName);
+
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from(tableName)
+    .insert([{ name }])
+    .select()
+    .single();
+
+  return { data, error };
+}
+
 export async function updateAdminLookupRecord(tableName, recordId, name) {
   assertLookupTable(tableName);
 

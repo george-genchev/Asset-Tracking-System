@@ -2,6 +2,7 @@ import "./admin.css";
 import html from "./admin.html?raw";
 import { Modal } from "bootstrap";
 import {
+  createAdminLookupRecord,
   deleteAdminLookupRecord,
   getActions,
   getAdminLookupRecordById,
@@ -21,6 +22,7 @@ const TABLE_LABELS = {
 };
 
 let viewModal = null;
+let createModal = null;
 let editModal = null;
 let deleteModal = null;
 let recordsByTable = {
@@ -168,6 +170,13 @@ function initializeModals() {
     }
   }
 
+  if (!createModal) {
+    const createEl = document.getElementById("adminCreateModal");
+    if (createEl) {
+      createModal = new Modal(createEl);
+    }
+  }
+
   if (!deleteModal) {
     const deleteEl = document.getElementById("adminDeleteModal");
     if (deleteEl) {
@@ -179,6 +188,12 @@ function initializeModals() {
   if (editSaveBtn && !editSaveBtn.dataset.bound) {
     editSaveBtn.dataset.bound = "true";
     editSaveBtn.addEventListener("click", handleEditSave);
+  }
+
+  const createSaveBtn = document.getElementById("admin-create-save-btn");
+  if (createSaveBtn && !createSaveBtn.dataset.bound) {
+    createSaveBtn.dataset.bound = "true";
+    createSaveBtn.addEventListener("click", handleCreateSave);
   }
 
   const deleteConfirmBtn = document.getElementById("admin-delete-confirm-btn");
@@ -196,6 +211,15 @@ function bindTableActions() {
 
   contentEl.dataset.actionsBound = "true";
   contentEl.addEventListener("click", async (event) => {
+    const createBtn = event.target.closest("[data-create-table]");
+    if (createBtn) {
+      const table = createBtn.dataset.createTable;
+      if (table) {
+        openCreateModal(table);
+      }
+      return;
+    }
+
     const actionBtn = event.target.closest("[data-action][data-table][data-id]");
     if (!actionBtn) {
       return;
@@ -223,6 +247,27 @@ function bindTableActions() {
       openDeleteModal(table, id);
     }
   });
+}
+
+function openCreateModal(tableName) {
+  const tableInput = document.getElementById("admin-create-table");
+  const nameInput = document.getElementById("admin-create-name");
+  const titleEl = document.getElementById("adminCreateModalTitle");
+  const errorEl = document.getElementById("admin-create-error");
+  const form = document.getElementById("admin-create-form");
+
+  if (tableInput) tableInput.value = tableName;
+  if (nameInput) nameInput.value = "";
+  if (titleEl) titleEl.textContent = `Create ${TABLE_LABELS[tableName] || tableName} Record`;
+  if (errorEl) {
+    errorEl.style.display = "none";
+    errorEl.textContent = "";
+  }
+  if (form) {
+    form.classList.remove("was-validated");
+  }
+
+  createModal?.show();
 }
 
 function getRecord(tableName, recordId) {
@@ -376,6 +421,43 @@ async function handleDeleteConfirm() {
 
   deleteModal?.hide();
   confirmBtn.disabled = false;
+  await reloadAdminData();
+}
+
+async function handleCreateSave() {
+  const form = document.getElementById("admin-create-form");
+  const tableInput = document.getElementById("admin-create-table");
+  const nameInput = document.getElementById("admin-create-name");
+  const errorEl = document.getElementById("admin-create-error");
+  const saveBtn = document.getElementById("admin-create-save-btn");
+
+  if (!form || !tableInput || !nameInput || !saveBtn) {
+    return;
+  }
+
+  if (!form.checkValidity()) {
+    form.classList.add("was-validated");
+    return;
+  }
+
+  saveBtn.disabled = true;
+  if (errorEl) {
+    errorEl.style.display = "none";
+    errorEl.textContent = "";
+  }
+
+  const { error } = await createAdminLookupRecord(tableInput.value, nameInput.value.trim());
+  if (error) {
+    if (errorEl) {
+      errorEl.textContent = error.message || "Failed to create record.";
+      errorEl.style.display = "block";
+    }
+    saveBtn.disabled = false;
+    return;
+  }
+
+  createModal?.hide();
+  saveBtn.disabled = false;
   await reloadAdminData();
 }
 
