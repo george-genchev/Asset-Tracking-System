@@ -1,5 +1,5 @@
 import "./header.css";
-import { getCurrentUser, signOut } from "../../lib/supabase.js";
+import { getCurrentUser, isCurrentUserAdmin, signOut } from "../../lib/supabase.js";
 
 export function initHeader(activePath) {
   const links = document.querySelectorAll("[data-route]");
@@ -19,6 +19,7 @@ async function updateAuthUI() {
   const userItem = document.getElementById("nav-user");
   const userName = document.getElementById("nav-user-name");
   const signoutBtn = document.getElementById("nav-signout");
+  const adminItem = document.getElementById("nav-admin-item");
 
   if (!userItem || !userName) {
     return;
@@ -28,6 +29,8 @@ async function updateAuthUI() {
     const { user } = await getCurrentUser();
 
     if (user) {
+      const { isAdmin } = await isCurrentUserAdmin();
+
       const displayName =
         user.user_metadata?.display_name ||
         user.user_metadata?.full_name ||
@@ -41,6 +44,12 @@ async function updateAuthUI() {
       registerMobile?.classList.add("d-none");
       loginDesktop?.classList.add("d-none");
       registerDesktop?.classList.add("d-none");
+
+      if (isAdmin) {
+        adminItem?.classList.remove("d-none");
+      } else {
+        adminItem?.classList.add("d-none");
+      }
 
       // Add sign out button click handler
       if (signoutBtn) {
@@ -57,6 +66,7 @@ async function updateAuthUI() {
       registerMobile?.classList.remove("d-none");
       loginDesktop?.classList.remove("d-none");
       registerDesktop?.classList.remove("d-none");
+      adminItem?.classList.add("d-none");
     }
   } catch (error) {
     userItem.classList.add("d-none");
@@ -64,5 +74,6 @@ async function updateAuthUI() {
     registerMobile?.classList.remove("d-none");
     loginDesktop?.classList.remove("d-none");
     registerDesktop?.classList.remove("d-none");
+    adminItem?.classList.add("d-none");
   }
 }

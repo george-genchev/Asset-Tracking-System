@@ -6,6 +6,7 @@ import indexPage from "./pages/index/index.js";
 import dashboardPage from "./pages/dashboard/dashboard.js";
 import loginPage from "./pages/login/login.js";
 import registerPage from "./pages/register/register.js";
+import adminPage from "./pages/admin/admin.js";
 import strategyPage from "./pages/strategy/strategy.js";
 import strategiesListPage from "./pages/strategies/strategies.js";
 import strategiesAddPage from "./pages/strategies/add/add.js";
@@ -20,6 +21,7 @@ const routes = {
   "/dashboard": dashboardPage,
   "/login": loginPage,
   "/register": registerPage,
+  "/admin": adminPage,
   "/strategies": strategiesListPage,
   "/strategies/add": strategiesAddPage,
   "/assets": assetsListPage,

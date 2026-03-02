@@ -65,6 +65,35 @@ export async function getCurrentUser() {
   return { user, error };
 }
 
+export async function getCurrentUserRole() {
+  const client = await getSupabase();
+  const { user, error: userError } = await getCurrentUser();
+
+  if (userError || !user) {
+    return { role: null, error: userError || null };
+  }
+
+  const { data, error } = await client
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  return { role: data?.role || null, error };
+}
+
+export async function isCurrentUserAdmin() {
+  const client = await getSupabase();
+
+  const { data: rpcData, error: rpcError } = await client.rpc("is_admin");
+  if (!rpcError) {
+    return { isAdmin: Boolean(rpcData), error: null };
+  }
+
+  const { role, error } = await getCurrentUserRole();
+  return { isAdmin: role === "admin", error };
+}
+
 export async function onAuthStateChange(callback) {
   const client = await getSupabase();
   const { data: { subscription } } = client.auth.onAuthStateChange(callback);
