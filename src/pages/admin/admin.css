@@ -1,3 +1,9 @@
-.admin-empty-note {
+.admin-table-actions {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.admin-empty-row {
   color: var(--muted);
+  text-align: center;
 }

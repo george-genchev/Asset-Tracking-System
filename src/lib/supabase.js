@@ -274,6 +274,15 @@ export async function getExchanges() {
   return { data, error };
 }
 
+export async function getOrders() {
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from("orders")
+    .select("*")
+    .order("name", { ascending: true });
+  return { data, error };
+}
+
 const STRATEGY_ATTACHMENTS_BUCKET = "strategy-attachments";
 
 export async function getStrategyAttachments(strategyId) {

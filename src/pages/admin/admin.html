@@ -6,9 +6,88 @@
     </div>
   </div>
 
-  <div class="card border-0 shadow-sm">
-    <div class="card-body p-4">
-      <p class="text-muted-strong mb-0">This panel is intentionally empty for now.</p>
+  <div id="admin-loading" class="text-muted-strong">Loading admin data...</div>
+  <div id="admin-error" class="alert alert-danger" role="alert" style="display: none;"></div>
+
+  <div id="admin-content" class="row g-4" style="display: none;">
+    <div class="col-12 col-xl-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3">Actions</h5>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Created</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="actions-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3">Exchanges</h5>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Created</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="exchanges-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3">Orders</h5>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Created</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3">Targets</h5>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Created</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="targets-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
