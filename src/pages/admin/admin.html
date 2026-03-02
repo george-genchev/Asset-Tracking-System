@@ -90,4 +90,74 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="adminViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="adminViewModalTitle">Record Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <dl class="mb-0">
+            <dt>Table</dt>
+            <dd id="admin-view-table" class="text-muted-strong"></dd>
+            <dt>Name</dt>
+            <dd id="admin-view-name" class="text-muted-strong"></dd>
+            <dt>Created</dt>
+            <dd id="admin-view-created" class="text-muted-strong mb-0"></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="adminEditModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="admin-edit-form" novalidate>
+            <input type="hidden" id="admin-edit-table" />
+            <input type="hidden" id="admin-edit-id" />
+            <div class="mb-3">
+              <label for="admin-edit-name" class="form-label fw-semibold">Name</label>
+              <input type="text" class="form-control" id="admin-edit-name" required />
+              <div class="invalid-feedback">Please enter a name.</div>
+            </div>
+            <div id="admin-edit-error" class="alert alert-danger mb-0" role="alert" style="display: none;"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-accent" id="admin-edit-save-btn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="adminDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="admin-delete-table" />
+          <input type="hidden" id="admin-delete-id" />
+          <p class="mb-2">Are you sure you want to delete <strong id="admin-delete-name"></strong>?</p>
+          <p class="text-muted-strong mb-0">This action cannot be undone.</p>
+          <div id="admin-delete-error" class="alert alert-danger mt-3 mb-0" role="alert" style="display: none;"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="admin-delete-confirm-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

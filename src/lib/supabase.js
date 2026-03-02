@@ -283,6 +283,55 @@ export async function getOrders() {
   return { data, error };
 }
 
+const ADMIN_LOOKUP_TABLES = new Set(["actions", "exchanges", "orders", "targets"]);
+
+function assertLookupTable(tableName) {
+  if (!ADMIN_LOOKUP_TABLES.has(tableName)) {
+    throw new Error("Invalid admin lookup table");
+  }
+}
+
+export async function getAdminLookupRecordById(tableName, recordId) {
+  assertLookupTable(tableName);
+
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from(tableName)
+    .select("*")
+    .eq("id", recordId)
+    .single();
+
+  return { data, error };
+}
+
+export async function updateAdminLookupRecord(tableName, recordId, name) {
+  assertLookupTable(tableName);
+
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from(tableName)
+    .update({ name })
+    .eq("id", recordId)
+    .select()
+    .single();
+
+  return { data, error };
+}
+
+export async function deleteAdminLookupRecord(tableName, recordId) {
+  assertLookupTable(tableName);
+
+  const client = await getSupabase();
+  const { data, error } = await client
+    .from(tableName)
+    .delete()
+    .eq("id", recordId)
+    .select()
+    .single();
+
+  return { data, error };
+}
+
 const STRATEGY_ATTACHMENTS_BUCKET = "strategy-attachments";
 
 export async function getStrategyAttachments(strategyId) {
